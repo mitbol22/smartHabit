@@ -66,4 +66,9 @@ class User extends Authenticatable
     {
         return $this->hasManyThrough(HabitLog::class, Habit::class);
     }
+
+    public function getTotalPointsAttribute()
+    {
+        return $this->points()->sum('points');
+    }
 }

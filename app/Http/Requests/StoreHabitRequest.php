@@ -24,7 +24,7 @@ class StoreHabitRequest extends FormRequest
     {
         return [
             'title' => 'required|string|max:255',
-            'description' => 'required|string',
+            'description' => 'nullable|string',
             'frequency' => 'required|in:daily,weekly',
             'target_count' => 'required|integer|min:1',
             'start_date' => 'required|date',

@@ -15,7 +15,8 @@ class HabitController extends Controller
      */
     public function index()
     {
-        return redirect()->route('dashboard');
+        $habits = Auth::user()->habits;
+        return view('habits.index', compact('habits'));
     }
 
     /**
@@ -63,7 +64,7 @@ class HabitController extends Controller
     {
         $this->authorize('update', $habit);
         $habit->update($request->validated());
-        return redirect()->route('dashboard')->with('success', 'Habit updated successfully.');
+        return redirect()->route('habits.index')->with('success', 'Habit updated successfully.');
     }
 
     /**
@@ -75,6 +76,6 @@ class HabitController extends Controller
 
         $habit->delete();
 
-        return redirect()->route('dashboard')->with('success', 'Habit deleted successfully.');
+        return redirect()->route('habits.index')->with('success', 'Habit deleted successfully.');
     }
 }

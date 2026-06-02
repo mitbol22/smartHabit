@@ -1,47 +1,80 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Edit Habit') }}
-        </h2>
-    </x-slot>
+    <div class="py-10">
+        <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm mx-4 sm:mx-0">
+                <div class="mb-8">
+                    <h1 class="text-2xl font-bold text-gray-900">Edit Habit</h1>
+                    <p class="text-gray-500 mt-1">Update your habit details and keep your streak going</p>
+                </div>
 
-    <div class="py-12">
-        <div class="max-w-2xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-8">
-                <form action="{{ route('habits.update', $habit->id) }}" method="POST" class="space-y-6">
+                <form action="{{ route('habits.update', $habit) }}" method="POST">
                     @csrf
-                    @method('PUT')
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Habit Name</label>
-                        <input type="text" name="title" value="{{ old('title', $habit->title) }}" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Description</label>
-                        <textarea name="description" required rows="3" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">{{ old('description', $habit->description) }}</textarea>
-                    </div>
-                    <div class="grid grid-cols-2 gap-4">
+                    @method('PATCH')
+
+                    <div class="space-y-6">
+                        <!-- Habit Name -->
                         <div>
-                            <label class="block text-sm font-medium text-gray-700">Frequency</label>
-                            <select name="frequency" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
-                                <option value="daily" @selected(old('frequency', $habit->frequency) == 'daily')>Daily</option>
-                                <option value="weekly" @selected(old('frequency', $habit->frequency) == 'weekly')>Weekly</option>
-                            </select>
+                            <label for="title" class="text-sm font-bold text-gray-700 block mb-2">Habit Name *</label>
+                            <input type="text" name="title" id="title" value="{{ old('title', $habit->title) }}" 
+                                class="w-full bg-gray-50 border-gray-200 rounded-xl focus:border-black focus:ring-black px-4 py-3"
+                                placeholder="e.g. Morning Workout" required>
+                            @error('title') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                         </div>
+
+                        <!-- Description -->
                         <div>
-                            <label class="block text-sm font-medium text-gray-700">Target Count</label>
-                            <input type="number" name="target_count" value="{{ old('target_count', $habit->target_count) }}" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                            <label for="description" class="text-sm font-bold text-gray-700 block mb-2">Description</label>
+                            <textarea name="description" id="description" rows="3" 
+                                class="w-full bg-gray-50 border-gray-200 rounded-xl focus:border-black focus:ring-black px-4 py-3"
+                                placeholder="Optional description of your habit">{{ old('description', $habit->description) }}</textarea>
+                            @error('description') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                         </div>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Start Date</label>
-                        <input type="date" name="start_date" value="{{ old('start_date', $habit->start_date) }}" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">End Date (Optional)</label>
-                        <input type="date" name="end_date" value="{{ old('end_date', $habit->end_date) }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
-                    </div>
-                    <div class="flex justify-end pt-4">
-                        <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition">Update Habit</button>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Frequency -->
+                            <div>
+                                <label for="frequency" class="text-sm font-bold text-gray-700 block mb-2">Frequency</label>
+                                <select name="frequency" id="frequency" 
+                                    class="w-full bg-gray-50 border-gray-200 rounded-xl focus:border-black focus:ring-black px-4 py-3">
+                                    <option value="daily" {{ old('frequency', $habit->frequency) == 'daily' ? 'selected' : '' }}>Daily</option>
+                                    <option value="weekly" {{ old('frequency', $habit->frequency) == 'weekly' ? 'selected' : '' }}>Weekly</option>
+                                </select>
+                            </div>
+
+                            <!-- Start Date -->
+                            <div>
+                                <label for="start_date" class="text-sm font-bold text-gray-700 block mb-2">Start Date</label>
+                                <input type="date" name="start_date" id="start_date" value="{{ old('start_date', $habit->start_date) }}" 
+                                    class="w-full bg-gray-50 border-gray-200 rounded-xl focus:border-black focus:ring-black px-4 py-3">
+                                @error('start_date') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-end">
+                            <!-- Target Count -->
+                            <div>
+                                <label for="target_count" class="text-sm font-bold text-gray-700 block mb-2">Target Count</label>
+                                <input type="number" name="target_count" id="target_count" value="{{ old('target_count', $habit->target_count) }}" min="1"
+                                    class="w-full bg-gray-50 border-gray-200 rounded-xl focus:border-black focus:ring-black px-4 py-3">
+                                @error('target_count') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                            </div>
+
+                            <!-- Active Status -->
+                            <div class="flex items-center space-x-3 h-[50px]">
+                                <span class="text-sm font-bold text-gray-700">Active</span>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" name="active" value="1" class="sr-only peer" checked disabled>
+                                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-black"></div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="pt-8 border-t border-gray-50 flex items-center justify-end space-x-4">
+                            <a href="{{ route('habits.index') }}" class="text-sm font-bold text-gray-500 hover:text-black transition">Cancel</a>
+                            <button type="submit" class="bg-black text-white px-10 py-3 rounded-xl font-bold hover:bg-gray-800 transition shadow-lg">
+                                Update
+                            </button>
+                        </div>
                     </div>
                 </form>
             </div>

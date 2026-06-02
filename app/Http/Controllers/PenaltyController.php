@@ -11,7 +11,7 @@ class PenaltyController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $penalties = $user->penalties()->with('habitLog.habit')->get();
+        $penalties = $user->penalties()->with('habitLog.habit')->latest()->paginate(10);
 
         // Calculate Weekly Penalties (points lost)
         $startOfWeek = Carbon::now()->startOfWeek();

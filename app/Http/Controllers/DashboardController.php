@@ -53,6 +53,21 @@ class DashboardController extends Controller
             }
             return false;
         });
+
+        $quotes = [
+            ['text' => 'Discipline is the bridge between goals and accomplishment.', 'author' => 'Jim Rohn'],
+            ['text' => 'Motivation is what gets you started. Habit is what keeps you going.', 'author' => 'Jim Ryun'],
+            ['text' => 'We are what we repeatedly do. Excellence, then, is not an act, but a habit.', 'author' => 'Will Durant'],
+            ['text' => 'The secret of your future is hidden in your daily routine.', 'author' => 'Mike Murdock'],
+            ['text' => 'It is not what we do once in a while that shapes our lives. It is what we do consistently.', 'author' => 'Anthony Robbins'],
+            ['text' => 'Success is the sum of small efforts, repeated day-in and day-out.', 'author' => 'Robert Collier'],
+            ['text' => 'Your habits will determine your future.', 'author' => 'Jack Canfield'],
+            ['text' => 'Good habits are as addictive as bad habits, and a lot more rewarding.', 'author' => 'Harvey Mackay'],
+            ['text' => 'First we make our habits, then our habits make us.', 'author' => 'John Dryden'],
+            ['text' => 'Success is a few simple disciplines, practiced every day.', 'author' => 'Jim Rohn'],
+        ];
+
+        $randomQuote = $quotes[array_rand($quotes)];
         
         return view('dashboard', compact(
             'totalHabits',
@@ -60,7 +75,8 @@ class DashboardController extends Controller
             'pointsBalance',
             'weeklyPenalties',
             'todayHabits',
-            'allHabits'
+            'allHabits',
+            'randomQuote'
         ));
     }
 }
