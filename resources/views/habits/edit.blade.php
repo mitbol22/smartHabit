@@ -59,6 +59,20 @@
                                 @error('target_count') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                             </div>
 
+                            <!-- Priority -->
+                            <div>
+                                <label for="priority" class="text-sm font-bold text-gray-700 block mb-2">Priority</label>
+                                <select name="priority" id="priority" 
+                                    class="w-full bg-gray-50 border-gray-200 rounded-xl focus:border-black focus:ring-black px-4 py-3">
+                                    <option value="low" {{ old('priority', $habit->priority) == 'low' ? 'selected' : '' }}>Low</option>
+                                    <option value="medium" {{ old('priority', $habit->priority) == 'medium' ? 'selected' : '' }}>Medium</option>
+                                    <option value="high" {{ old('priority', $habit->priority) == 'high' ? 'selected' : '' }}>High</option>
+                                </select>
+                                @error('priority') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-end">
                             <!-- Active Status -->
                             <div class="flex items-center space-x-3 h-[50px]">
                                 <span class="text-sm font-bold text-gray-700">Active</span>

@@ -67,10 +67,10 @@
                     </div>
 
                     @forelse ($todayHabits as $habit)
-                        <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm mb-4 flex items-center justify-between hover:border-black transition duration-200 group">
+                        <div class="p-5 rounded-2xl border {{ $habit->today_status === 'completed' ? 'border-green-500 bg-green-50' : ($habit->today_status === 'missed' ? 'border-red-500 bg-red-50' : 'bg-white border-gray-100') }} shadow-sm mb-4 flex items-center justify-between hover:border-black transition duration-200 group">
                             <div class="flex items-center space-x-4">
-                                <div class="w-10 h-10 bg-gray-50 rounded-xl flex items-center justify-center group-hover:bg-black group-hover:text-white transition duration-200">
-                                    <i class="fa-solid fa-check text-xs"></i>
+                                <div class="w-10 h-10 {{ $habit->today_status === 'completed' ? 'bg-green-500 text-white' : ($habit->today_status === 'missed' ? 'bg-red-500 text-white' : 'bg-gray-50') }} rounded-xl flex items-center justify-center group-hover:bg-black group-hover:text-white transition duration-200">
+                                    <i class="fa-solid {{ $habit->today_status === 'completed' ? 'fa-check' : ($habit->today_status === 'missed' ? 'fa-xmark' : 'fa-check') }} text-xs"></i>
                                 </div>
                                 <div>
                                     <h3 class="font-bold text-gray-900">{{ $habit->title }}</h3>
@@ -78,16 +78,24 @@
                                 </div>
                             </div>
                             <div class="flex space-x-2">
-                                <form action="{{ route('habits.check-in', $habit) }}" method="POST">
-                                    @csrf
-                                    <input type="hidden" name="status" value="completed">
-                                    <button type="submit" class="bg-black text-white px-4 py-2 rounded-xl text-sm font-bold hover:bg-gray-800 transition">Complete</button>
-                                </form>
-                                <form action="{{ route('habits.check-in', $habit) }}" method="POST">
-                                    @csrf
-                                    <input type="hidden" name="status" value="missed">
-                                    <button type="submit" class="bg-gray-100 text-gray-600 px-4 py-2 rounded-xl text-sm font-bold hover:bg-gray-200 transition">Miss</button>
-                                </form>
+                                @if ($habit->today_status)
+                                    <form action="{{ route('habits.undo', $habit) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="bg-gray-800 text-white px-4 py-2 rounded-xl text-sm font-bold hover:bg-black transition">Undo</button>
+                                    </form>
+                                @else
+                                    <form action="{{ route('habits.check-in', $habit) }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="status" value="completed">
+                                        <button type="submit" class="bg-black text-white px-4 py-2 rounded-xl text-sm font-bold hover:bg-gray-800 transition">Complete</button>
+                                    </form>
+                                    <form action="{{ route('habits.check-in', $habit) }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="status" value="missed">
+                                        <button type="submit" class="bg-gray-100 text-gray-600 px-4 py-2 rounded-xl text-sm font-bold hover:bg-gray-200 transition">Miss</button>
+                                    </form>
+                                @endif
                             </div>
                         </div>
                     @empty
@@ -108,10 +116,10 @@
                         <p class="text-sm font-bold text-gray-900 mb-2">Weekly Progress</p>
                         <div class="flex items-center justify-between mb-2">
                             <span class="text-xs font-semibold text-gray-500">Completion Rate</span>
-                            <span class="text-xs font-bold text-black">{{ $totalHabits > 0 ? round(($todayHabits->where('status', 'completed')->count() / max(1, $todayHabits->count())) * 100) : 0 }}%</span>
+                            <span class="text-xs font-bold text-black">{{ $todayHabits->count() > 0 ? round(($todayHabits->where('today_status', 'completed')->count() / $todayHabits->count()) * 100) : 0 }}%</span>
                         </div>
                         <div class="w-full bg-gray-100 rounded-full h-2 mb-6">
-                            <div class="bg-black h-2 rounded-full" style="width: {{ $totalHabits > 0 ? ($todayHabits->where('status', 'completed')->count() / max(1, $todayHabits->count())) * 100 : 0 }}%"></div>
+                            <div class="bg-black h-2 rounded-full" style="width: {{ $todayHabits->count() > 0 ? ($todayHabits->where('today_status', 'completed')->count() / $todayHabits->count()) * 100 : 0 }}%"></div>
                         </div>
 
                         <div class="space-y-4">
@@ -122,7 +130,7 @@
                                     </div>
                                     <span class="text-sm font-medium text-gray-700">Completed</span>
                                 </div>
-                                <span class="text-sm font-bold text-gray-900">{{ $todayHabits->where('status', 'completed')->count() }}</span>
+                                <span class="text-sm font-bold text-gray-900">{{ $todayHabits->where('today_status', 'completed')->count() }}</span>
                             </div>
                             <div class="flex items-center justify-between p-3 bg-gray-50 rounded-2xl">
                                 <div class="flex items-center space-x-3">
@@ -131,7 +139,7 @@
                                     </div>
                                     <span class="text-sm font-medium text-gray-700">Missed</span>
                                 </div>
-                                <span class="text-sm font-bold text-gray-900">{{ $todayHabits->where('status', 'missed')->count() }}</span>
+                                <span class="text-sm font-bold text-gray-900">{{ $todayHabits->where('today_status', 'missed')->count() }}</span>
                             </div>
                         </div>
                     </div>

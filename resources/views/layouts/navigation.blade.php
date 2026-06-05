@@ -12,24 +12,24 @@
                 </div>
 
                 <!-- Navigation Links -->
-                <div class="hidden space-x-6 sm:-my-px sm:ms-10 sm:flex items-center">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" class="flex items-center space-x-2 py-5 text-sm font-medium">
+                <div class="hidden space-x-6 sm:-my-px sm:ms-10 sm:flex items-center self-stretch">
+                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" class="flex items-center space-x-2 h-full text-sm font-medium border-b-2">
                         <i class="fa-solid fa-house-chimney w-4 h-4"></i>
                         <span>{{ __('Dashboard') }}</span>
                     </x-nav-link>
-                    <x-nav-link :href="route('habits.index')" :active="request()->routeIs('habits.*')" class="flex items-center space-x-2 py-5 text-sm font-medium">
+                    <x-nav-link :href="route('habits.index')" :active="request()->routeIs('habits.*')" class="flex items-center space-x-2 h-full text-sm font-medium border-b-2">
                         <i class="fa-solid fa-list-ul w-4 h-4"></i>
                         <span>{{ __('Habits') }}</span>
                     </x-nav-link>
-                    <x-nav-link :href="route('analytics.index')" :active="request()->routeIs('analytics.*')" class="flex items-center space-x-2 py-5 text-sm font-medium">
+                    <x-nav-link :href="route('analytics.index')" :active="request()->routeIs('analytics.*')" class="flex items-center space-x-2 h-full text-sm font-medium border-b-2">
                         <i class="fa-solid fa-chart-line w-4 h-4"></i>
                         <span>{{ __('Progress') }}</span>
                     </x-nav-link>
-                    <x-nav-link :href="route('penalties.index')" :active="request()->routeIs('penalties.*')" class="flex items-center space-x-2 py-5 text-sm font-medium">
+                    <x-nav-link :href="route('penalties.index')" :active="request()->routeIs('penalties.*')" class="flex items-center space-x-2 h-full text-sm font-medium border-b-2">
                         <i class="fa-solid fa-triangle-exclamation w-4 h-4"></i>
                         <span>{{ __('Penalties') }}</span>
                     </x-nav-link>
-                    <x-nav-link :href="route('leaderboard.index')" :active="request()->routeIs('leaderboard.*')" class="flex items-center space-x-2 py-5 text-sm font-medium">
+                    <x-nav-link :href="route('leaderboard.index')" :active="request()->routeIs('leaderboard.*')" class="flex items-center space-x-2 h-full text-sm font-medium border-b-2">
                         <i class="fa-solid fa-trophy w-4 h-4"></i>
                         <span>{{ __('Leaderboard') }}</span>
                     </x-nav-link>

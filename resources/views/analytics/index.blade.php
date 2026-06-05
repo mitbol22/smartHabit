@@ -60,15 +60,29 @@
 
             <!-- Trend Section -->
             <div class="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm mb-10 mx-4 sm:mx-0">
-                <h3 class="text-xl font-bold text-gray-900 mb-8">7-Day Habit Completion Trend</h3>
+                <div class="flex items-center justify-between mb-8">
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-900">7-Day Habit Completion Trend</h3>
+                        <p class="text-xs text-gray-500 mt-1 font-medium">Daily visualization of your consistency over the last week.</p>
+                    </div>
+                    <div class="hidden md:block bg-gray-50 px-4 py-2 rounded-xl border border-gray-100">
+                        <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest leading-none mb-1">Calculation</p>
+                        <p class="text-xs font-bold text-gray-700">Completed vs. Missed logs per day</p>
+                    </div>
+                </div>
                 
                 <div class="flex flex-col space-y-8">
                     <div class="grid grid-cols-7 gap-4">
                         @foreach($completionTrend as $data)
                             <div class="flex flex-col items-center group">
                                 <div class="w-full flex flex-col-reverse space-y-1 space-y-reverse h-40 bg-gray-50 rounded-xl overflow-hidden mb-4 relative">
-                                    <div class="bg-black w-full" style="height: {{ ($data['completed'] / max(1, $data['completed'] + $data['missed'])) * 100 }}%"></div>
-                                    <div class="bg-gray-200 w-full" style="height: {{ ($data['missed'] / max(1, $data['completed'] + $data['missed'])) * 100 }}%"></div>
+                                    @php
+                                        $totalDay = $data['completed'] + $data['missed'];
+                                        $completedPercent = $totalDay > 0 ? ($data['completed'] / $totalDay) * 100 : 0;
+                                        $missedPercent = $totalDay > 0 ? ($data['missed'] / $totalDay) * 100 : 0;
+                                    @endphp
+                                    <div class="bg-black w-full" style="height: {{ $completedPercent }}%"></div>
+                                    <div class="bg-gray-200 w-full" style="height: {{ $missedPercent }}%"></div>
                                     
                                     <!-- Tooltip on hover -->
                                     <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-200 bg-black/5 flex-col text-[10px] font-bold">
@@ -82,15 +96,20 @@
                         @endforeach
                     </div>
                     
-                    <div class="flex justify-center space-x-6 pt-4 border-t border-gray-50">
-                        <div class="flex items-center space-x-2">
-                            <div class="w-3 h-3 bg-black rounded-full"></div>
-                            <span class="text-xs font-bold text-gray-600">Completed</span>
+                    <div class="bg-gray-50 p-4 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between space-y-4 sm:space-y-0 border border-gray-100">
+                        <div class="flex items-center space-x-6">
+                            <div class="flex items-center space-x-2">
+                                <div class="w-3 h-3 bg-black rounded-full"></div>
+                                <span class="text-xs font-bold text-gray-600">Completed (C)</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <div class="w-3 h-3 bg-gray-200 rounded-full"></div>
+                                <span class="text-xs font-bold text-gray-600">Missed (M)</span>
+                            </div>
                         </div>
-                        <div class="flex items-center space-x-2">
-                            <div class="w-3 h-3 bg-gray-200 rounded-full"></div>
-                            <span class="text-xs font-bold text-gray-600">Missed</span>
-                        </div>
+                        <p class="text-[10px] text-gray-400 font-medium italic">
+                            * Bars represent the ratio of habits completed versus missed on that specific day.
+                        </p>
                     </div>
                 </div>
             </div>

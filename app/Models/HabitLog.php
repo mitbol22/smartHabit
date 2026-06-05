@@ -17,4 +17,14 @@ class HabitLog extends Model
     {
         return $this->belongsTo(Habit::class);
     }
+
+    public function points()
+    {
+        return $this->hasMany(Point::class);
+    }
+
+    public function penalties()
+    {
+        return $this->hasMany(Penalty::class);
+    }
 }

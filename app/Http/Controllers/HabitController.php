@@ -15,7 +15,9 @@ class HabitController extends Controller
      */
     public function index()
     {
-        $habits = Auth::user()->habits;
+        $habits = Auth::user()->habits()
+            ->orderByRaw("FIELD(priority, 'high', 'medium', 'low')")
+            ->get();
         return view('habits.index', compact('habits'));
     }
 
@@ -45,6 +47,8 @@ class HabitController extends Controller
     public function show(Habit $habit)
     {
         $this->authorize('view', $habit);
+        $todayStr = now()->toDateString();
+        $habit->today_status = $habit->logs()->whereDate('date', $todayStr)->first()?->status;
         return view('habits.show', compact('habit'));
     }
 

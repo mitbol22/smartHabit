@@ -33,9 +33,9 @@
                         
                         <div class="flex items-center justify-between pt-6 border-t border-gray-50">
                             <div class="flex -space-x-2">
-                                <!-- Placeholder for streak visualization or priority -->
-                                <span class="text-xs font-bold text-orange-500 bg-orange-50 px-3 py-1 rounded-full">
-                                    Priority: High
+                                <span class="text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full 
+                                    {{ $habit->priority === 'high' ? 'bg-red-50 text-red-600' : ($habit->priority === 'medium' ? 'bg-orange-50 text-orange-600' : 'bg-blue-50 text-blue-600') }}">
+                                    {{ $habit->priority }}
                                 </span>
                             </div>
                             <div class="flex items-center space-x-3">

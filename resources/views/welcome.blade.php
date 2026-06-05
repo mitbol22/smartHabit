@@ -53,9 +53,6 @@
                         <a href="{{ route('register') }}" class="w-full sm:w-auto bg-black text-white px-10 py-4 rounded-2xl font-bold text-lg hover:bg-gray-800 transition shadow-2xl">
                             Start for Free
                         </a>
-                        <a href="#features" class="w-full sm:w-auto bg-white border border-gray-200 text-gray-900 px-10 py-4 rounded-2xl font-bold text-lg hover:bg-gray-50 transition">
-                            Learn More
-                        </a>
                     </div>
                 </main>
 

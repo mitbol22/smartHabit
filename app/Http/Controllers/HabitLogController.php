@@ -16,6 +16,12 @@ class HabitLogController extends Controller
             abort(403);
         }
 
+        // Check if log for today already exists
+        $existingLog = $habit->logs()->whereDate('date', now()->toDateString())->first();
+        if ($existingLog) {
+            return back()->with('error', 'You have already recorded a status for today.');
+        }
+
         $request->validate([
             'status' => 'required|in:completed,missed,skipped',
         ]);
@@ -33,5 +39,23 @@ class HabitLogController extends Controller
         }
 
         return back()->with('success', 'Check-in recorded.');
+    }
+
+    public function destroy(Habit $habit)
+    {
+        if ($habit->user_id !== Auth::id()) {
+            abort(403);
+        }
+
+        $log = $habit->logs()->whereDate('date', now()->toDateString())->first();
+
+        if ($log) {
+            $log->points()->delete();
+            $log->penalties()->delete();
+            $log->delete();
+            return back()->with('success', 'Check-in undone.');
+        }
+
+        return back()->with('error', 'No check-in found for today to undo.');
     }
 }

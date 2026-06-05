@@ -68,15 +68,35 @@
                     </div>
                 </div>
 
-                <div class="mt-10 p-6 bg-black rounded-3xl text-white text-center">
-                    <p class="text-sm font-medium mb-4">Ready to complete your habit for today?</p>
-                    <form action="{{ route('habits.check-in', $habit) }}" method="POST">
-                        @csrf
-                        <input type="hidden" name="status" value="completed">
-                        <button type="submit" class="w-full bg-white text-black font-bold py-3 rounded-xl hover:bg-gray-100 transition shadow-lg">
-                            Mark as Completed
-                        </button>
-                    </form>
+                <div class="mt-10 p-6 {{ $habit->today_status === 'completed' ? 'bg-green-500' : ($habit->today_status === 'missed' ? 'bg-red-500' : 'bg-black') }} rounded-3xl text-white text-center transition-colors duration-300">
+                    @if ($habit->today_status)
+                        <p class="text-sm font-medium mb-4">You've marked this habit as <strong>{{ $habit->today_status }}</strong> for today.</p>
+                        <form action="{{ route('habits.undo', $habit) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="w-full bg-white text-black font-bold py-3 rounded-xl hover:bg-gray-100 transition shadow-lg">
+                                Undo Check-in
+                            </button>
+                        </form>
+                    @else
+                        <p class="text-sm font-medium mb-4">Ready to complete your habit for today?</p>
+                        <div class="flex space-x-3">
+                            <form action="{{ route('habits.check-in', $habit) }}" method="POST" class="flex-1">
+                                @csrf
+                                <input type="hidden" name="status" value="completed">
+                                <button type="submit" class="w-full bg-white text-black font-bold py-3 rounded-xl hover:bg-gray-100 transition shadow-lg">
+                                    Mark as Completed
+                                </button>
+                            </form>
+                            <form action="{{ route('habits.check-in', $habit) }}" method="POST" class="flex-1">
+                                @csrf
+                                <input type="hidden" name="status" value="missed">
+                                <button type="submit" class="w-full bg-gray-800 text-white font-bold py-3 rounded-xl hover:bg-gray-700 transition shadow-lg border border-gray-700">
+                                    Mark as Missed
+                                </button>
+                            </form>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>

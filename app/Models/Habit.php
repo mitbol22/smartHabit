@@ -12,6 +12,7 @@ class Habit extends Model
         'description',
         'frequency',
         'target_count',
+        'priority',
         'start_date',
         'end_date',
     ];

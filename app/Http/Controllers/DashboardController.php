@@ -15,7 +15,15 @@ class DashboardController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $allHabits = $user->habits;
+        $today = Carbon::today();
+        $todayStr = $today->toDateString();
+
+        // Eager load only today's log for each habit and sort by priority
+        $allHabits = $user->habits()->with(['logs' => function($query) use ($todayStr) {
+            $query->whereDate('date', $todayStr);
+        }])
+        ->orderByRaw("FIELD(priority, 'high', 'medium', 'low')")
+        ->get();
 
         $totalHabits = $allHabits->count();
         $pointsBalance = $user->points()->sum('points');
@@ -27,7 +35,7 @@ class DashboardController extends Controller
                                  ->latest('date')
                                  ->first();
         if ($lastCompletedLog) {
-            $currentStreak = $lastCompletedLog->streak_count; // This uses the streak_count stored in the log
+            $currentStreak = $lastCompletedLog->streak_count;
         }
         
         // Calculate Weekly Penalties
@@ -38,7 +46,6 @@ class DashboardController extends Controller
             ->sum('penalty_value');
 
         // Filter Habits due Today
-        $today = Carbon::today();
         $todayHabits = $allHabits->filter(function ($habit) use ($today) {
             // Check if habit is daily
             if ($habit->frequency === 'daily') {
@@ -46,12 +53,16 @@ class DashboardController extends Controller
             }
             // Check if habit is weekly and due on this day of the week
             if ($habit->frequency === 'weekly') {
-                // Ensure it's active for this week and matches the day of week
-                return Carbon::parse($habit->start_date)->lte($today) // Habit has started
-                       && Carbon::parse($habit->start_date)->dayOfWeek === $today->dayOfWeek // Matches day of week
-                       && ($habit->end_date === null || Carbon::parse($habit->end_date)->gte($today)); // Not ended yet
+                return Carbon::parse($habit->start_date)->lte($today)
+                       && Carbon::parse($habit->start_date)->dayOfWeek === $today->dayOfWeek
+                       && ($habit->end_date === null || Carbon::parse($habit->end_date)->gte($today));
             }
             return false;
+        });
+
+        // Add today's status to each habit for easier access in view
+        $todayHabits->each(function($habit) {
+            $habit->today_status = $habit->logs->first()?->status;
         });
 
         $quotes = [

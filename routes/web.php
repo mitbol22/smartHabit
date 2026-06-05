@@ -17,6 +17,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::resource('habits', HabitController::class);
     Route::post('/habits/{habit}/check-in', [App\Http\Controllers\HabitLogController::class, 'store'])->name('habits.check-in');
+    Route::delete('/habits/{habit}/undo', [App\Http\Controllers\HabitLogController::class, 'destroy'])->name('habits.undo');
     Route::get('/analytics', [App\Http\Controllers\AnalyticsController::class, 'index'])->name('analytics.index');
     Route::get('/penalties', [App\Http\Controllers\PenaltyController::class, 'index'])->name('penalties.index');
     Route::get('/leaderboard', [App\Http\Controllers\LeaderboardController::class, 'index'])->name('leaderboard.index');

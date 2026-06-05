@@ -27,6 +27,7 @@ class StoreHabitRequest extends FormRequest
             'description' => 'nullable|string',
             'frequency' => 'required|in:daily,weekly',
             'target_count' => 'required|integer|min:1',
+            'priority' => 'required|in:low,medium,high',
             'start_date' => 'required|date',
             'end_date' => 'nullable|date|after_or_equal:start_date',
         ];
