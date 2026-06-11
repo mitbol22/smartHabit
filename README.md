@@ -23,6 +23,15 @@
 
 ## Project Overview
 
+**Group Name**: Purnama
+**Section**: 2
+**Group Members:** 
+- Adib Zakwan bin Asmadi 2411695
+- Ahmad Abbas bin Masnadi 2414719 
+- Muhammad Hazim bin Khairudin 2414167
+- Muhammad Firdaus bin Lukman 2416377
+- Muhammad Adib Fikri bin Haidzir 2310005
+
 **HabitForge** is a web-based habit management platform that helps users build and sustain positive habits through a reward-and-penalty accountability system. Users create daily or weekly habits, log completions, earn points for success, and receive penalties for missed sessions. A global leaderboard drives friendly competition while personal analytics charts show progress over time.
 
 **Key Features:**
